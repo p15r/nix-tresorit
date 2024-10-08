@@ -1,0 +1,11 @@
+repos:
+- repo: https://github.com/NixOS/nixfmt
+  rev: 458402c5d3f474e56db5ba845bd98b4d86852702
+  hooks:
+  - id: nixfmt
+- repo: https://github.com/astro/deadnix
+  rev: v1.2.1
+  hooks:
+  - id: deadnix
+    #args: [--edit] # Uncomment to automatically modify files
+    stages: [commit]
