@@ -25,41 +25,12 @@
       nixpkgs,
     }:
     let
-      pname = "tresorit";
-      version = "0.1.0";
-
+      pname = "tresorit-fhs";
       pkgs = import nixpkgs { system = "x86_64-linux"; };
-
-      tresorit = pkgs.stdenv.mkDerivation {
-        inherit pname version;
-
-        src = builtins.fetchurl {
-          url = "https://installerstorage.blob.core.windows.net/public/install/tresorit_installer.run";
-          sha256 = "865bf2e54791546e9637823671ca5475091b6f8a2599c668040d3feed092b6ee";
-        };
-
-        dontBuild = true;
-        dontConfigure = true;
-        dontMake = true;
-        dontWrapQtApps = true;
-
-        unpackPhase = ''
-          tail -n+93 $src | tar xz -C $TMP
-        '';
-
-        installPhase = ''
-          mkdir -p $out/bin
-          cp -rf $TMP/tresorit_x64/* $out/bin/
-          rm $out/bin/uninstall.sh
-        '';
-      };
-
       tresorit_fhs = pkgs.buildFHSEnv {
         name = pname;
-        version = version;
 
         targetPkgs = pkgs: [
-          tresorit
           pkgs.qt5.qtbase
           pkgs.fuse
           pkgs.xorg.libxcb
@@ -76,23 +47,7 @@
           pkgs.libGLU
           pkgs.libGL
         ];
-
-        # runScript = ''
-        #   # debug the FHS environment...
-        #   echo $HOME
-        #   /bin/tresorit
-        # '';
-        runScript = pname;
-
-        # where (mountPoint) inside the fhsenv do I have to mount the host path in order to have write access?
-        # or should I "just make $out/bin writable?
-        #extraBindMounts = [
-        #  {
-        #    hostPath = "$HOME/.local/share/";
-        #    mountPoint = "$HOME/.local/share/";
-        #  }
-        #];
-
+        runScript = "bash";
         meta = with pkgs.lib; {
           description = "Secure file synchronisation using Tresorit";
           homepage = "https://tresorit.com/";
