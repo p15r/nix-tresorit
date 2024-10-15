@@ -64,6 +64,9 @@
           pkgs.fuse
           pkgs.xorg.libxcb
           pkgs.xorg.libX11
+          pkgs.glibc
+          pkgs.pcre2
+          pkgs.libcap
           pkgs.xorg.xcbutilwm # libxcb-icccm.so.4
           pkgs.xorg.xcbutilimage # libxcb-image.so.0
           pkgs.xorg.xcbutilkeysyms # libxcb-keysyms.so.1
