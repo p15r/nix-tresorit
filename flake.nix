@@ -1,13 +1,8 @@
-# https://github.com/apeyroux/tresorit.nix uses the patchelfhook to run on NixOS. This works until Tresorit autom. updates and then you are screwed, because you are no longer running the patched binaries.
+# https://github.com/apeyroux/tresorit.nix uses the patchelfhook to run Tresorit on NixOS.
+# This fails after Tresorit autoupdates itself as the updated binary is no longer patched.
 # 
-# So, the goal of this code is to create a FHS environment for Tresorit. I have a working environment so far, but Tresorit doesn't like to be executed outside of ~/.local/share/tresorit and w/o permission to self-update. Both conditions are not met within an FHS env, so the resulting FHS-based Tresorit exits w/ error: [18:35:22] ! /home/jenkins/jenkins/git/TresoritQt/Source/main.cpp:136: Another instance is running.. I do not know if it is possible to export the FHS isolated binaries from the FHS env into the local file system at ~/.local/share/tresorit.
-# 
-# Alternative, just containerize Tresorit.
+# Alternatively, containerize Tresorit...
 
-# Misc commands
-# $out: root directory of chroot, e.g. $out/bin is /bin in fhs env
-# run: NIXPKGS_ALLOW_UNFREE=1 nix run --impure .#default
-# build: NIXPKGS_ALLOW_UNFREE=1 nix build --impure .#default (output in ./results/bin/tresorit)
 # debug
 # - flake: nix flake show
 # - outpus: nix repl; :lf .; outputs.<TAB>
