@@ -1,4 +1,4 @@
-An FHS Env-based Nix package for Tresorit allowing it to be installed
+An FHS Env-based Nix Flake for Tresorit allowing it to be installed
 from the [official source](https://tresorit.com/download) without the worry
 about Tresorit being dynamically-linked and self-updating.
 
