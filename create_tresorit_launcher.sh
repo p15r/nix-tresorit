@@ -19,6 +19,7 @@ tresorit_relpath=".local/share/tresorit"
 de_autostart_relpath=".config/autostart"
 de_app_registry_relpath=".local/share/applications"
 tresorit_desktop="tresorit.desktop"
+tresorit_fhs_desktop="tresorit-fhs.desktop"
 tresorit_autostart_relpath="${de_autostart_relpath}/${tresorit_desktop}"
 self_path="$(cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd)"
 out_path_c="${self_path}${out_path}"
@@ -48,13 +49,13 @@ if ! [ -f "${HOME}"/${tresorit_autostart_relpath}.bk ]; then
     err_exit "Expected to find \"${tresorit_desktop}.bk\", but it is not present."
 fi
 cp "${HOME}"/${de_autostart_relpath}/${tresorit_desktop}.bk \
-   "${HOME}"/${de_autostart_relpath}/tresorit-fhs.desktop
+   "${HOME}"/${de_autostart_relpath}/${tresorit_fhs_desktop}
 sed -i \
     "s|^Name=Tresorit$|Name=Tresorit FHS|" \
-    "${HOME}"/${de_autostart_relpath}/tresorit-fhs.desktop
+    "${HOME}"/${de_autostart_relpath}/${tresorit_fhs_desktop}
 sed -i \
     "s|^Exec=.*$|Exec=${HOME}/${tresorit_relpath}/${tresorit_launcher_file}|" \
-    "${HOME}"/${de_autostart_relpath}/tresorit-fhs.desktop
+    "${HOME}"/${de_autostart_relpath}/${tresorit_fhs_desktop}
 
 printf "Patching Tresorit application config...\n"
 if [ -f "${HOME}"/${de_app_registry_relpath}/${tresorit_desktop} ]; then
@@ -62,12 +63,12 @@ if [ -f "${HOME}"/${de_app_registry_relpath}/${tresorit_desktop} ]; then
        "${HOME}"/${de_app_registry_relpath}/${tresorit_desktop}.bk
 fi
 cp "${HOME}"/${de_app_registry_relpath}/${tresorit_desktop}.bk \
-   "${HOME}"/${de_app_registry_relpath}/tresorit-fhs.desktop
+   "${HOME}"/${de_app_registry_relpath}/${tresorit_fhs_desktop}
 sed -i \
     "s|^Name=Tresorit$|Name=Tresorit FHS|" \
-    "${HOME}"/${de_app_registry_relpath}/tresorit-fhs.desktop
+    "${HOME}"/${de_app_registry_relpath}/${tresorit_fhs_desktop}
 sed -i \
     "s|^Exec=.*$|Exec=${HOME}/${tresorit_relpath}/${tresorit_launcher_file}|" \
-    "${HOME}"/${de_app_registry_relpath}/tresorit-fhs.desktop
+    "${HOME}"/${de_app_registry_relpath}/${tresorit_fhs_desktop}
 
 printf "Done.\n"
