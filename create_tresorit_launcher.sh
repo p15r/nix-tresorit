@@ -15,6 +15,7 @@ err_exit() {
 
 out_path="/result/bin/tresorit-fhs"
 tresorit_launcher_file="tresorit_launcher.sh"
+tresorit_relpath=".local/share/tresorit"
 self_path="$(cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd)"
 out_path_c="${self_path}${out_path}"
 
@@ -26,11 +27,11 @@ printf "Creating Tresorit launcher...\n"
 tresorit_fhs_shell=$(readlink -f ${out_path_c})
 cat > "${tresorit_launcher_file}" <<EOF
 printf "Starting Tresorit within FHS environment...\n"
-${tresorit_fhs_shell} -c "${HOME}/.local/share/tresorit/tresorit --hidden" &
+${tresorit_fhs_shell} -c "${HOME}/${tresorit_relpath}/tresorit --hidden" &
 printf "Done.\n"
 EOF
 chmod +x "${tresorit_launcher_file}"
-cp "${tresorit_launcher_file}" "${HOME}/.local/share/tresorit/"
+cp "${tresorit_launcher_file}" "${HOME}/${tresorit_relpath}/"
 
 if [ -f "${HOME}"/.config/autostart/tresorit.desktop ]; then
     printf "Removing Tresorit's broken startup config...\n"
@@ -46,7 +47,7 @@ sed -i \
     "s|^Name=Tresorit$|Name=Tresorit FHS|" \
     "${HOME}"/.config/autostart/tresorit-fhs.desktop
 sed -i \
-    "s|^Exec=.*$|Exec=${HOME}/.local/share/tresorit/${tresorit_launcher_file}|" \
+    "s|^Exec=.*$|Exec=${HOME}/${tresorit_relpath}/${tresorit_launcher_file}|" \
     "${HOME}"/.config/autostart/tresorit-fhs.desktop
 
 printf "Patching Tresorit application config...\n"
@@ -58,7 +59,7 @@ sed -i \
     "s|^Name=Tresorit$|Name=Tresorit FHS|" \
     "${HOME}"/.local/share/applications/tresorit-fhs.desktop
 sed -i \
-    "s|^Exec=.*$|Exec=${HOME}/.local/share/tresorit/${tresorit_launcher_file}|" \
+    "s|^Exec=.*$|Exec=${HOME}/${tresorit_relpath}/${tresorit_launcher_file}|" \
     "${HOME}"/.local/share/applications/tresorit-fhs.desktop
 
 printf "Done.\n"
