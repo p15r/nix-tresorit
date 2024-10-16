@@ -29,7 +29,7 @@ if ! [ -h "${out_path_c}" ]; then
 fi
 
 printf "Creating Tresorit launcher...\n"
-tresorit_fhs_shell=$(readlink -f ${out_path_c})
+tresorit_fhs_shell=$(readlink -f "${out_path_c}")
 cat > "${tresorit_launcher_file}" <<EOF
 printf "Starting Tresorit within FHS environment...\n"
 ${tresorit_fhs_shell} -c "${HOME}/${tresorit_relpath}/tresorit --hidden" &
@@ -40,35 +40,35 @@ mv "${tresorit_launcher_file}" "${HOME}/${tresorit_relpath}/"
 
 if [ -f "${HOME}"/${tresorit_autostart_relpath} ]; then
     printf "Removing Tresorit's broken startup config...\n"
-    mv "${HOME}"/${de_autostart_relpath}/${tresorit_desktop} \
-       "${HOME}"/${de_autostart_relpath}/${tresorit_desktop}.bk
+    mv "${HOME}/${de_autostart_relpath}/${tresorit_desktop}" \
+       "${HOME}/${de_autostart_relpath}/${tresorit_desktop}.bk"
 fi
 
 printf "Patching Tresorit startup config...\n"
-if ! [ -f "${HOME}"/${tresorit_autostart_relpath}.bk ]; then
+if ! [ -f "${HOME}/${tresorit_autostart_relpath}.bk" ]; then
     err_exit "Expected to find \"${tresorit_desktop}.bk\", but it is not present."
 fi
-cp "${HOME}"/${de_autostart_relpath}/${tresorit_desktop}.bk \
-   "${HOME}"/${de_autostart_relpath}/${tresorit_fhs_desktop}
+cp "${HOME}/${de_autostart_relpath}/${tresorit_desktop}.bk" \
+   "${HOME}/${de_autostart_relpath}/${tresorit_fhs_desktop}"
 sed -i \
     "s|^Name=Tresorit$|Name=Tresorit FHS|" \
-    "${HOME}"/${de_autostart_relpath}/${tresorit_fhs_desktop}
+    "${HOME}/${de_autostart_relpath}/${tresorit_fhs_desktop}"
 sed -i \
     "s|^Exec=.*$|Exec=${HOME}/${tresorit_relpath}/${tresorit_launcher_file}|" \
-    "${HOME}"/${de_autostart_relpath}/${tresorit_fhs_desktop}
+    "${HOME}/${de_autostart_relpath}/${tresorit_fhs_desktop}"
 
 printf "Patching Tresorit application config...\n"
-if [ -f "${HOME}"/${de_app_registry_relpath}/${tresorit_desktop} ]; then
-    mv "${HOME}"/${de_app_registry_relpath}/${tresorit_desktop} \
-       "${HOME}"/${de_app_registry_relpath}/${tresorit_desktop}.bk
+if [ -f "${HOME}/${de_app_registry_relpath}/${tresorit_desktop}" ]; then
+    mv "${HOME}/${de_app_registry_relpath}/${tresorit_desktop}" \
+       "${HOME}/${de_app_registry_relpath}/${tresorit_desktop}.bk"
 fi
-cp "${HOME}"/${de_app_registry_relpath}/${tresorit_desktop}.bk \
-   "${HOME}"/${de_app_registry_relpath}/${tresorit_fhs_desktop}
+cp "${HOME}/${de_app_registry_relpath}/${tresorit_desktop}.bk" \
+   "${HOME}/${de_app_registry_relpath}/${tresorit_fhs_desktop}"
 sed -i \
     "s|^Name=Tresorit$|Name=Tresorit FHS|" \
-    "${HOME}"/${de_app_registry_relpath}/${tresorit_fhs_desktop}
+    "${HOME}/${de_app_registry_relpath}/${tresorit_fhs_desktop}"
 sed -i \
     "s|^Exec=.*$|Exec=${HOME}/${tresorit_relpath}/${tresorit_launcher_file}|" \
-    "${HOME}"/${de_app_registry_relpath}/${tresorit_fhs_desktop}
+    "${HOME}/${de_app_registry_relpath}/${tresorit_fhs_desktop}"
 
 printf "Done.\n"
