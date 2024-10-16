@@ -18,7 +18,8 @@ tresorit_launcher_file="tresorit_launcher.sh"
 tresorit_relpath=".local/share/tresorit"
 de_autostart_relpath=".config/autostart"
 de_app_registry_relpath=".local/share/applications"
-tresorit_autostart_relpath="${de_autostart_relpath}/tresorit.desktop"
+tresorit_desktop="tresorit.desktop"
+tresorit_autostart_relpath="${de_autostart_relpath}/${tresorit_desktop}"
 self_path="$(cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd)"
 out_path_c="${self_path}${out_path}"
 
@@ -38,15 +39,15 @@ mv "${tresorit_launcher_file}" "${HOME}/${tresorit_relpath}/"
 
 if [ -f "${HOME}"/${tresorit_autostart_relpath} ]; then
     printf "Removing Tresorit's broken startup config...\n"
-    mv "${HOME}"/${de_autostart_relpath}/tresorit.desktop \
-       "${HOME}"/${de_autostart_relpath}/tresorit.desktop.bk
+    mv "${HOME}"/${de_autostart_relpath}/${tresorit_desktop} \
+       "${HOME}"/${de_autostart_relpath}/${tresorit_desktop}.bk
 fi
 
 printf "Patching Tresorit startup config...\n"
 if ! [ -f "${HOME}"/${tresorit_autostart_relpath}.bk ]; then
-    err_exit "Expected to find \"tresorit.desktop.bk\", but it is not present."
+    err_exit "Expected to find \"${tresorit_desktop}.bk\", but it is not present."
 fi
-cp "${HOME}"/${de_autostart_relpath}/tresorit.desktop.bk \
+cp "${HOME}"/${de_autostart_relpath}/${tresorit_desktop}.bk \
    "${HOME}"/${de_autostart_relpath}/tresorit-fhs.desktop
 sed -i \
     "s|^Name=Tresorit$|Name=Tresorit FHS|" \
@@ -56,11 +57,11 @@ sed -i \
     "${HOME}"/${de_autostart_relpath}/tresorit-fhs.desktop
 
 printf "Patching Tresorit application config...\n"
-if [ -f "${HOME}"/${de_app_registry_relpath}/tresorit.desktop ]; then
-    mv "${HOME}"/${de_app_registry_relpath}/tresorit.desktop \
-       "${HOME}"/${de_app_registry_relpath}/tresorit.desktop.bk
+if [ -f "${HOME}"/${de_app_registry_relpath}/${tresorit_desktop} ]; then
+    mv "${HOME}"/${de_app_registry_relpath}/${tresorit_desktop} \
+       "${HOME}"/${de_app_registry_relpath}/${tresorit_desktop}.bk
 fi
-cp "${HOME}"/${de_app_registry_relpath}/tresorit.desktop.bk \
+cp "${HOME}"/${de_app_registry_relpath}/${tresorit_desktop}.bk \
    "${HOME}"/${de_app_registry_relpath}/tresorit-fhs.desktop
 sed -i \
     "s|^Name=Tresorit$|Name=Tresorit FHS|" \
