@@ -16,6 +16,7 @@ err_exit() {
 out_path="/result/bin/tresorit-fhs"
 tresorit_launcher_file="tresorit_launcher.sh"
 tresorit_relpath=".local/share/tresorit"
+tresorit_autostart_relpath=".config/autostart/tresorit.desktop"
 self_path="$(cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd)"
 out_path_c="${self_path}${out_path}"
 
@@ -33,13 +34,13 @@ EOF
 chmod +x "${tresorit_launcher_file}"
 cp "${tresorit_launcher_file}" "${HOME}/${tresorit_relpath}/"
 
-if [ -f "${HOME}"/.config/autostart/tresorit.desktop ]; then
+if [ -f "${HOME}"/${tresorit_autostart_relpath} ]; then
     printf "Removing Tresorit's broken startup config...\n"
     mv "${HOME}"/.config/autostart/{tresorit.desktop,tresorit.desktop.bk}
 fi
 
 printf "Patching Tresorit startup config...\n"
-if ! [ -f "${HOME}"/.config/autostart/tresorit.desktop.bk ]; then
+if ! [ -f "${HOME}"/${tresorit_autostart_relpath}.bk ]; then
     err_exit "Expected to find \"tresorit.desktop.bk\", but it is not present."
 fi
 cp "${HOME}"/.config/autostart/{tresorit.desktop.bk,tresorit-fhs.desktop}
