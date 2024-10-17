@@ -1,3 +1,5 @@
+# hooks depend on:
+# `nix shell nixpkgs#haskellPackages.cabal-install nixpkgs#ghc nixpkgs#deadnix`
 repos:
 - repo: https://github.com/NixOS/nixfmt
   rev: 458402c5d3f474e56db5ba845bd98b4d86852702

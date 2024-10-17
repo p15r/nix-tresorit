@@ -1,11 +1,13 @@
 # https://github.com/apeyroux/tresorit.nix uses the patchelfhook to run Tresorit on NixOS.
 # This fails after Tresorit autoupdates itself as the updated binary is no longer patched.
+# The dependencies of the `tresorit` binary have been discovered 
+# using `ldd` & `strace`.
 # 
 # Alternatively, containerize Tresorit...
 
-# debug
-# - flake: nix flake show
-# - outpus: nix repl; :lf .; outputs.<TAB>
+# debug this flake:
+# - flake: `nix flake show`
+# - outputs: `nix repl; :lf .; outputs.<TAB>`
 
 {
   description = "Tresorit in FHS environment";
@@ -26,6 +28,7 @@
         name = pname;
 
         targetPkgs = pkgs: [
+          # `tresorit` binary
           pkgs.qt5.qtbase
           pkgs.fuse
           pkgs.xorg.libxcb
@@ -41,6 +44,10 @@
           pkgs.xorg.libXext
           pkgs.libGLU
           pkgs.libGL
+          # `tresorit-cli` binary
+          # to be done
+          # `tresorit-daemon` binary
+          # to be done
         ];
         runScript = "bash";
         meta = with pkgs.lib; {

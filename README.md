@@ -1,4 +1,4 @@
-An FHS Env-based Nix Flake for Tresorit allowing it to be installed
+A Nix Flake that creates an FHS environment for Tresorit allowing it to be installed
 from the [official source](https://tresorit.com/download) without the worry
 about Tresorit being dynamically-linked and self-updating.
 
@@ -12,10 +12,9 @@ about Tresorit being dynamically-linked and self-updating.
    ```
 1. Build FHS env: `NIXPKGS_ALLOW_UNFREE=1 nix build --impure .#default`
 1. "Patch" Tresorit installation: `./patch.sh`
-   - creates an FHS-based Tresorit launcher for desktop environments
+   - creates an FHS env-based Tresorit launcher for desktop environments
    - registers Tresorit launcher as autostart application
    - updates desktop environment (`.desktop`) files to respect FHS env
-1. Start Tresorit, go to Preferences and disable "Start Tresorit on system startup"
 
 Testing:
 - [x] Tresorit version on 15th of October 2024: 3.5.1244.4360
