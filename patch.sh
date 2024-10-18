@@ -38,9 +38,15 @@ EOF
 chmod +x "${tresorit_launcher_file}"
 mv "${tresorit_launcher_file}" "${HOME}/${tresorit_relpath}/"
 
+if ! [ -d "${HOME}/${de_autostart_relpath}" ]; then
+    mkdir "${HOME}/${de_autostart_relpath}"
+fi
 if [ -f "${HOME}"/${tresorit_autostart_relpath} ]; then
     printf "Removing Tresorit's broken startup config...\n"
     mv "${HOME}/${tresorit_autostart_relpath}" \
+       "${HOME}/${tresorit_autostart_relpath}.bk"
+else
+    cp "${HOME}/${de_app_registry_relpath}/${tresorit_desktop}" \
        "${HOME}/${tresorit_autostart_relpath}.bk"
 fi
 
