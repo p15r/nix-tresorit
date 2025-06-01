@@ -12,12 +12,12 @@ without the worry about it being a dynamically-linked, self-updating binary.
    ```
 1. Build FHS env: `NIXPKGS_ALLOW_UNFREE=1 nix build --impure .#default`
 1. Patch Tresorit .desktop files: `./patch.sh`
-<details>
-  <summary>details on patching</summary>
+   <details>
+     <summary>details on patching</summary>
 
-  - creates an FHS env-based Tresorit launcher for desktop environments
-  - registers Tresorit launcher as autostart application
-  - updates desktop environment (.desktop) files to respect FHS env
-</details>
+     - creates an FHS env-based Tresorit launcher for desktop environments
+     - registers Tresorit launcher as autostart application
+     - updates desktop environment (.desktop) files to respect FHS env
+   </details>
 
-Done 🎉.
+Done 🎉
