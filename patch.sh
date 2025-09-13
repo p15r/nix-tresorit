@@ -49,6 +49,7 @@ else
     cp "${HOME}/${de_app_registry_relpath}/${tresorit_desktop}" \
        "${HOME}/${tresorit_autostart_relpath}.bk"
 fi
+sed -i 's/^/# /' "${HOME}/${tresorit_autostart_relpath}.bk"
 
 printf "Patching Tresorit startup config...\n"
 if ! [ -f "${HOME}/${tresorit_autostart_relpath}.bk" ]; then
@@ -56,6 +57,7 @@ if ! [ -f "${HOME}/${tresorit_autostart_relpath}.bk" ]; then
 fi
 cp "${HOME}/${tresorit_autostart_relpath}.bk" \
    "${HOME}/${de_autostart_relpath}/${tresorit_fhs_desktop}"
+sed -i 's/^# //' "${HOME}/${de_autostart_relpath}/${tresorit_fhs_desktop}"
 sed -i \
     "s|^Name=Tresorit$|Name=Tresorit FHS|" \
     "${HOME}/${de_autostart_relpath}/${tresorit_fhs_desktop}"
