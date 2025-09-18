@@ -11,13 +11,14 @@ without the worry about it being a dynamically-linked, self-updating binary.
    && sh tresorit_installer.run && rm tresorit_installer.run
    ```
 1. Build FHS env: `NIXPKGS_ALLOW_UNFREE=1 nix build --impure .#default`
-1. Patch Tresorit .desktop files: `./patch.sh`
-   <details>
-     <summary>details on patching</summary>
+1. Create Tresorit FHS launcher script: `./create_launcher.sh` (requires `bash`)
+1. Launch `Tresorit FHS` from your favorite app launcher and sign in.
 
-     - creates an FHS env-based Tresorit launcher for desktop environments
-     - registers Tresorit launcher as autostart application
-     - updates desktop environment (.desktop) files to respect FHS env
-   </details>
+Done 🎉.
 
-Done 🎉
+<details>
+<summary>Quick troubleshooting</summary>
+
+- service status: `systemctl --user status app-tresorit\\x2dfhs@autostart.service`
+- logs: `journalctl --user -u app-tresorit\\x2dfhs@autostart.service`
+</details>

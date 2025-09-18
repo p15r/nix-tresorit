@@ -13,68 +13,38 @@ err_exit() {
     exit 1
 }
 
-out_relpath="result/bin/tresorit-fhs"
-tresorit_launcher_file="tresorit_launcher.sh"
-tresorit_relpath=".local/share/tresorit"
-de_autostart_relpath=".config/autostart"
-de_app_registry_relpath=".local/share/applications"
-tresorit_desktop="tresorit.desktop"
-tresorit_fhs_desktop="tresorit-fhs.desktop"
-tresorit_autostart_relpath="${de_autostart_relpath}/${tresorit_desktop}"
-self_path="$(cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd)"
-out_path="${self_path}/${out_relpath}"
-
-if ! [ -h "${out_path}" ]; then
-    err_exit "The output of \"nix build\" could not be found at \"${out_relpath}\"."
+tresorit_fhs_changed="false"
+if [ -f "${HOME}/.local/share/applications/tresorit.desktop" ]; then
+    printf "Patch Tresorit application config...\n"
+    mv "${HOME}/.local/share/applications/tresorit.desktop" \
+       "${HOME}/.local/share/applications/tresorit.desktop.bk"
+    sed -i 's/^/# /' "${HOME}/.local/share/applications/tresorit.desktop.bk"
+    cp "${HOME}/.local/share/applications/tresorit.desktop.bk" \
+       "${HOME}/.local/share/applications/tresorit-fhs.desktop"
+    sed -i 's/^# //' "${HOME}/.local/share/applications/tresorit-fhs.desktop"
+    sed -i \
+        "s|^Name=Tresorit$|Name=Tresorit FHS|" \
+        "${HOME}/.local/share/applications/tresorit-fhs.desktop"
+    sed -i \
+        "s|^Exec=.*$|Exec=${HOME}/.local/share/tresorit/tresorit_fhs_launcher.sh|" \
+        "${HOME}/.local/share/applications/tresorit-fhs.desktop"
+    tresorit_fhs_changed="true"
 fi
 
-printf "Creating Tresorit launcher...\n"
-tresorit_fhs_shell=$(readlink -f "${out_path}")
-cat > "${tresorit_launcher_file}" <<EOF
-printf "Starting Tresorit within FHS environment...\n"
-${tresorit_fhs_shell} -c "${HOME}/${tresorit_relpath}/tresorit --hidden" &
-printf "Done.\n"
-EOF
-chmod +x "${tresorit_launcher_file}"
-mv "${tresorit_launcher_file}" "${HOME}/${tresorit_relpath}/"
-
-if ! [ -d "${HOME}/${de_autostart_relpath}" ]; then
-    mkdir "${HOME}/${de_autostart_relpath}"
-fi
-if [ -f "${HOME}"/${tresorit_autostart_relpath} ]; then
-    printf "Removing Tresorit's broken startup config...\n"
-    mv "${HOME}/${tresorit_autostart_relpath}" \
-       "${HOME}/${tresorit_autostart_relpath}.bk"
-else
-    cp "${HOME}/${de_app_registry_relpath}/${tresorit_desktop}" \
-       "${HOME}/${tresorit_autostart_relpath}.bk"
+if ! [ -d "${HOME}/.config/autostart" ]; then
+    printf "Create ~/.config/autostart exists...\n"
+    mkdir "${HOME}/.config/autostart"
 fi
 
-printf "Patching Tresorit startup config...\n"
-if ! [ -f "${HOME}/${tresorit_autostart_relpath}.bk" ]; then
-    err_exit "Expected to find \"${tresorit_desktop}.bk\", but it is not present."
+if [ -f "${HOME}"/.config/autostart/tresorit.desktop ]; then
+    printf "Disable Tresorit's broken startup config...\n"
+    mv "${HOME}/.config/autostart/tresorit.desktop" \
+       "${HOME}/.config/autostart/tresorit.desktop.bk"
+    sed -i 's/^/# /' "${HOME}/.config/autostart/tresorit.desktop.bk"
 fi
-cp "${HOME}/${tresorit_autostart_relpath}.bk" \
-   "${HOME}/${de_autostart_relpath}/${tresorit_fhs_desktop}"
-sed -i \
-    "s|^Name=Tresorit$|Name=Tresorit FHS|" \
-    "${HOME}/${de_autostart_relpath}/${tresorit_fhs_desktop}"
-sed -i \
-    "s|^Exec=.*$|Exec=${HOME}/${tresorit_relpath}/${tresorit_launcher_file}|" \
-    "${HOME}/${de_autostart_relpath}/${tresorit_fhs_desktop}"
 
-printf "Patching Tresorit application config...\n"
-if [ -f "${HOME}/${de_app_registry_relpath}/${tresorit_desktop}" ]; then
-    mv "${HOME}/${de_app_registry_relpath}/${tresorit_desktop}" \
-       "${HOME}/${de_app_registry_relpath}/${tresorit_desktop}.bk"
+if ! [ -f "${HOME}/.config/autostart/tresorit-fhs.desktop" ] || [ ${tresorit_fhs_changed} == "true" ]; then
+    printf "Register Tresorit FHS autostart config...\n"
+    cp "${HOME}/.local/share/applications/tresorit-fhs.desktop" \
+       "${HOME}/.config/autostart/tresorit-fhs.desktop"
 fi
-cp "${HOME}/${de_app_registry_relpath}/${tresorit_desktop}.bk" \
-   "${HOME}/${de_app_registry_relpath}/${tresorit_fhs_desktop}"
-sed -i \
-    "s|^Name=Tresorit$|Name=Tresorit FHS|" \
-    "${HOME}/${de_app_registry_relpath}/${tresorit_fhs_desktop}"
-sed -i \
-    "s|^Exec=.*$|Exec=${HOME}/${tresorit_relpath}/${tresorit_launcher_file}|" \
-    "${HOME}/${de_app_registry_relpath}/${tresorit_fhs_desktop}"
-
-printf "Done.\n"
