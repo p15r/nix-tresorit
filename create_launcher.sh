@@ -13,6 +13,16 @@ die() {
     exit 1
 }
 
+launcher_script="${HOME}/.local/share/tresorit/tresorit_fhs_launcher.sh"
+if [ -f "${HOME}/.local/share/tresorit/tresorit_launcher.sh" ]; then
+    launcher_script="${HOME}/.local/share/tresorit/tresorit_launcher.sh"
+fi
+launch_cmd=$(grep "tresorit --hidden" "${launcher_script}")
+launch_cmd=${launch_cmd%" &"}
+stop_cmd=$(echo $launch_cmd | sed 's/tresorit \-\-hidden/tresorit-cli stop/')
+printf "Stopping Tresorit FHS...\n"
+eval "${stop_cmd}"
+
 self_path="$(cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd)"
 out_path="${self_path}/result/bin/tresorit-fhs"
 
@@ -33,7 +43,7 @@ cat > "tresorit_fhs_launcher.sh" <<EOF
 #!/usr/bin/env bash
 ${HOME}/.local/share/tresorit/patch.sh
 printf "Starting Tresorit within FHS environment...\n"
-${tresorit_fhs_shell} -c "${HOME}/.local/share/tresorit/tresorit --hidden" &
+${tresorit_fhs_shell} -c "${HOME}/.local/share/tresorit/tresorit --hidden" > /dev/null 2>&1 &
 printf "Done.\n"
 EOF
 chmod +x "tresorit_fhs_launcher.sh"
@@ -43,7 +53,7 @@ printf "Copying & running Tresorit application & autostart patching script...\n"
 cp ./patch.sh ${HOME}/.local/share/tresorit/patch.sh
 ${HOME}/.local/share/tresorit/patch.sh
 
-printf "Launching Tresorit FHS daemon..."
+printf "Launching Tresorit FHS daemon...\n"
 "${HOME}/.local/share/tresorit/tresorit_fhs_launcher.sh"
 
 printf "Done 🚀\n"
