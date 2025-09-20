@@ -13,25 +13,29 @@ die() {
     exit 1
 }
 
-launcher_script="${HOME}/.local/share/tresorit/tresorit_fhs_launcher.sh"
-if [ -f "${HOME}/.local/share/tresorit/tresorit_launcher.sh" ]; then
-    launcher_script="${HOME}/.local/share/tresorit/tresorit_launcher.sh"
-fi
-launch_cmd=$(grep "tresorit --hidden" "${launcher_script}")
-launch_cmd=${launch_cmd%" &"}
-stop_cmd=$(echo $launch_cmd | sed 's/tresorit \-\-hidden/tresorit-cli stop/')
-printf "Stopping Tresorit FHS...\n"
-eval "${stop_cmd}"
-
 self_path="$(cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd)"
 out_path="${self_path}/result/bin/tresorit-fhs"
-
 if ! [ -h "${out_path}" ]; then
     die "The output of \"nix build\" could not be found at \"${out_path}\"."
 fi
 
+launcher_script=""
 if [ -f "${HOME}/.local/share/tresorit/tresorit_launcher.sh" ]; then
-    printf "Found old installation (2025-09-14 or older), cleaning it up.\n"
+    launcher_script="${HOME}/.local/share/tresorit/tresorit_launcher.sh"
+fi
+if [ -f "${HOME}/.local/share/tresorit/tresorit_fhs_launcher.sh" ]; then
+    launcher_script="${HOME}/.local/share/tresorit/tresorit_fhs_launcher.sh"
+fi
+if [ "${launcher_script}" != "" ]; then
+    launch_cmd=$(grep "tresorit --hidden" "${launcher_script}")
+    launch_cmd=${launch_cmd%" &"}
+    stop_cmd=$(echo $launch_cmd | sed 's/tresorit \-\-hidden/tresorit-cli stop/')
+    printf "Stopping Tresorit FHS...\n"
+    eval "${stop_cmd}"
+fi
+
+if [ -f "${HOME}/.local/share/tresorit/tresorit_launcher.sh" ]; then
+    printf "Found old installation (<=2025-09-14), cleaning it up.\n"
     rm "${HOME}/.local/share/tresorit/tresorit_launcher.sh" # succeeded by "tresorit_fhs_launcher.sh"
     cp ${HOME}/.local/share/applications/tresorit.desktop.bk \
        ${HOME}/.local/share/applications/tresorit.desktop # restore original file, thus triggering patching script
