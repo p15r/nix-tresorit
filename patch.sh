@@ -32,7 +32,7 @@ if [ -f "${HOME}/.local/share/applications/tresorit.desktop" ]; then
 fi
 
 if ! [ -d "${HOME}/.config/autostart" ]; then
-    printf "Create ~/.config/autostart exists...\n"
+    printf "Create ~/.config/autostart...\n"
     mkdir "${HOME}/.config/autostart"
 fi
 

@@ -47,7 +47,7 @@ cat > "tresorit_fhs_launcher.sh" <<EOF
 #!/usr/bin/env bash
 ${HOME}/.local/share/tresorit/patch.sh
 printf "Starting Tresorit within FHS environment...\n"
-${tresorit_fhs_shell} -c "${HOME}/.local/share/tresorit/tresorit --hidden" > /dev/null 2>&1 &
+${tresorit_fhs_shell} -c "${HOME}/.local/share/tresorit/tresorit --hidden" > ${HOME}/.local/share/tresorit/fhs.log 2>&1 &
 printf "Done.\n"
 EOF
 chmod +x "tresorit_fhs_launcher.sh"
