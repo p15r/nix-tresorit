@@ -20,5 +20,6 @@ Done 🎉.
 <summary>Quick troubleshooting</summary>
 
 - service status: `systemctl --user status app-tresorit\\x2dfhs@autostart.service`
-- logs: `journalctl --user -u app-tresorit\\x2dfhs@autostart.service`
+- systemd logs: `journalctl --user -u app-tresorit\\x2dfhs@autostart.service`
+- fhs logs: `$HOME/.local/share/tresorit/fhs.log`
 </details>
