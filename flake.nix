@@ -36,26 +36,23 @@
             qt5.qtbase
             libglvnd # ldd: libGL.so.1
             fuse
-            libxcb
-            # ldd: libxcb-glx.so.0
-            # ldd: libxcb-shm.so.0
-            # ldd: libxcb-randr.so.0
-            # ldd: libxcb-render.so.0
-            # ldd: libxcb-shape.so.0
-            # ldd: libxcb-sync.so.1
-            # ldd: libxcb-xfixes.so.0
-            # ldd: libxcb-xkb.so.1
-            # ldd: libxcb.so.1
-            libx11
-            # ldd: libX11-xcb.so.1
-            # ldd: libX11.so.6
-            glibc
-            # ldd: libdl.so.2
-            # ldd: librt.so.1
-            # ldd: libm.so.6
-            # ldd: libpthread.so.0
-            # ldd: libc.so.6
-            # ldd: ld-linux-x86-64.so.2
+            libxcb # ldd: libxcb-glx.so.0
+                   # ldd: libxcb-shm.so.0
+                   # ldd: libxcb-randr.so.0
+                   # ldd: libxcb-render.so.0
+                   # ldd: libxcb-shape.so.0
+                   # ldd: libxcb-sync.so.1
+                   # ldd: libxcb-xfixes.so.0
+                   # ldd: libxcb-xkb.so.1
+                   # ldd: libxcb.so.1
+            libx11 # ldd: libX11-xcb.so.1
+                   # ldd: libX11.so.6
+            glibc # ldd: libdl.so.2
+                  # ldd: librt.so.1
+                  # ldd: libm.so.6
+                  # ldd: libpthread.so.0
+                  # ldd: libc.so.6
+                  # ldd: ld-linux-x86-64.so.2
             libgcc # ldd: libgcc_s.so.1
             pcre2
             libcap
@@ -63,9 +60,8 @@
             libxcb-image # ldd: libxcb-image.so.0
             libxcb-keysyms # ldd: libxcb-keysyms.so.1
             libxcb-render-util # ldd: libxcb-render-util.so.0
-            libxkbcommon
-            # ldd: libxkbcommon-x11.so.0
-            # ldd: libxkbcommon.so.0
+            libxkbcommon # ldd: libxkbcommon-x11.so.0
+                         # ldd: libxkbcommon.so.0
             libxext # ldd: libXext.so.6
             xcb-util-cursor # metrics log: xcb-util-cursor
             xcbutilxrm # metrics log: xcbutilxrm
