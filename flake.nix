@@ -32,6 +32,8 @@
 
         targetPkgs =
           pkgs: with pkgs; [
+            bash    # runScript
+
             # "tresorit" binary
             qt5.qtbase
             libglvnd # ldd: libGL.so.1
