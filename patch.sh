@@ -43,8 +43,16 @@ if [ -f "${HOME}"/.config/autostart/tresorit.desktop ]; then
     sed -i 's/^/# /' "${HOME}/.config/autostart/tresorit.desktop.bk"
 fi
 
+if [ -f "${HOME}/.config/autostart/tresorit-fhs.desktop" ] && ! grep -Fq -- "--hidden" "${HOME}/.config/autostart/tresorit-fhs.desktop" > /dev/null 2>&1; then
+    printf "Found old installation (<2026-09-08), updating Tresorit FHS autostart config.\n"
+    tresorit_fhs_changed="true"
+fi
+
 if ! [ -f "${HOME}/.config/autostart/tresorit-fhs.desktop" ] || [ ${tresorit_fhs_changed} == "true" ]; then
     printf "Register Tresorit FHS autostart config...\n"
     cp "${HOME}/.local/share/applications/tresorit-fhs.desktop" \
        "${HOME}/.config/autostart/tresorit-fhs.desktop"
+    sed -E -i \
+        "s|^Exec=(.*)$|Exec=\1 --hidden|" \
+        "${HOME}/.config/autostart/tresorit-fhs.desktop"
 fi

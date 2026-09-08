@@ -27,7 +27,7 @@ if [ -f "${HOME}/.local/share/tresorit/tresorit_fhs_launcher.sh" ]; then
     launcher_script="${HOME}/.local/share/tresorit/tresorit_fhs_launcher.sh"
 fi
 if [ "${launcher_script}" != "" ]; then
-    launch_cmd=$(grep "tresorit --hidden" "${launcher_script}")
+    launch_cmd=$(grep "tresorit" "${launcher_script}")
     launch_cmd=${launch_cmd%" &"}
     stop_cmd=$(echo $launch_cmd | sed 's/tresorit \-\-hidden/tresorit-cli stop/')
     printf "Stopping Tresorit FHS...\n"
@@ -57,7 +57,7 @@ ${HOME}/.local/share/tresorit/patch.sh
 printf "Starting Tresorit within FHS environment...\n"
 printf "ℹ️ Dropping all Linux capabilities for bubblewrap.\n"
 setpriv --no-new-privs --inh-caps=-all --ambient-caps=-all -- \
-    ${tresorit_fhs_shell} -c "${HOME}/.local/share/tresorit/tresorit --hidden" > ${HOME}/.local/share/tresorit/fhs.log 2>&1 &
+    ${tresorit_fhs_shell} -c "${HOME}/.local/share/tresorit/tresorit \${@}" > ${HOME}/.local/share/tresorit/fhs.log 2>&1 &
 printf "Done.\n"
 EOF
 chmod +x "tresorit_fhs_launcher.sh"
