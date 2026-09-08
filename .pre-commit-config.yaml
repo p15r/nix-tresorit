@@ -10,4 +10,4 @@ repos:
   hooks:
   - id: deadnix
     #args: [--edit] # Uncomment to automatically modify files
-    stages: [commit]
+    stages: [pre-commit]
