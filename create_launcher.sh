@@ -56,8 +56,9 @@ cat > "tresorit_fhs_launcher.sh" <<EOF
 ${HOME}/.local/share/tresorit/patch.sh
 printf "Starting Tresorit within FHS environment...\n"
 printf "ℹ️ Dropping all Linux capabilities for bubblewrap.\n"
+printf 'argv: <%s>\n' "\${@}" > ${HOME}/.local/share/tresorit/fhs.log
 setpriv --no-new-privs --inh-caps=-all --ambient-caps=-all -- \
-    ${tresorit_fhs_shell} -c "${HOME}/.local/share/tresorit/tresorit \${@}" > ${HOME}/.local/share/tresorit/fhs.log 2>&1 &
+    ${tresorit_fhs_shell} -c "${HOME}/.local/share/tresorit/tresorit \${@}" >> ${HOME}/.local/share/tresorit/fhs.log 2>&1 &
 printf "Done.\n"
 EOF
 chmod +x "tresorit_fhs_launcher.sh"
